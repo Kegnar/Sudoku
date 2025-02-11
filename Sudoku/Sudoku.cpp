@@ -1,8 +1,12 @@
-﻿#include <iostream>
+﻿//Чит для судоку
+
+#include <iostream>
 #include <string>
 #include <vector>
 #include <Windows.h>
+
 using namespace std;
+
 class Sudoku {
 	vector<vector<int>> grid;
 	// проверяет возможность воткнуть число в клетку
@@ -13,7 +17,6 @@ class Sudoku {
 				return false;
 			}
 		}
-
 		int startRow = row - row % 3;
 		int startCol = col - col % 3;
 		for (int i = 0; i < 3; ++i) {
@@ -50,37 +53,37 @@ class Sudoku {
 public:
 	Sudoku() : grid(9, vector<int>(9, 0)) {}
 
+	// ручной ввод начального положения
 	void inputGrid() {
-		std::cout << "Введите начальную положение судоку построчно (9 строк по 9 цифр). Используйте 0 для пустых ячеек:\n";
+		cout << "Введите начальное положение судоку (9 строк по 9 цифр). Для пустых ячеек введите 0:\n";
 		for (int row = 0; row < 9; ++row) {
-			std::string line;
-			std::cout << "Введите " << row + 1 << "-ю строку: ";
-			std::cin >> line;
+			string line;
+			cout << "Введите " << row + 1 << "-ю строку: ";
+			cin >> line;
 
-			// Проверяем длину строки
 			if (line.length() != 9) {
-				cerr << "Ошибка: строка должна содержать ровно 9 цифр!\n";
+				cout << "Ошибка: строка должна содержать ровно 9 цифр!\n";
 				exit(1);
 			}
 
-			// Преобразуем строку в числа
 			for (int col = 0; col < 9; ++col) {
 				if (line[col] >= '0' && line[col] <= '9') {
-					grid[row][col] = line[col] - '0'; // Преобразуем символ в число
+					grid[row][col] = line[col] - '0';
 				}
 				else {
-					cerr << "Ошибка: введены недопустимые символы!\n";
+					cout << "Ошибка: введены недопустимые символы!\n";
 					exit(1);
 				}
 			}
 		}
 	}
+	// автоматический ввод
 	void setGrid(const vector<vector<int>>& grid)
 	{
 		this->grid = grid;
 	}
 
-	// Рисуем судоку
+	// рисовалка судоку
 	void printGrid() const {
 
 		for (int i = 0; i < 9; i++)
@@ -101,7 +104,7 @@ public:
 		}
 	}
 
-	// Запуск решалки судоку
+	// запуск решалки 
 	bool solveSudoku() {
 		if (solve()) {
 			return true;
@@ -116,7 +119,9 @@ int main() {
 	SetConsoleOutputCP(1251);
 
 	Sudoku sudoku;
+
 # ifdef _DEBUG  // профиль Debug
+
 	vector<vector<int>> test{
 	{5, 3, 0, 0, 7, 0, 0, 0, 0},
 	{6, 0, 0, 1, 9, 5, 0, 0, 0},
@@ -137,11 +142,11 @@ int main() {
 #endif
 
 
-	cout << "\nНачальная сетка:\n";
+	cout << "Начальное положение:\n\n";
 	sudoku.printGrid();
 
 	if (sudoku.solveSudoku()) {
-		std::cout << "\nРешенная сетка:\n";
+		cout << "\nРешение:\n\n";
 		sudoku.printGrid();
 	}
 
